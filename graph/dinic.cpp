@@ -4,6 +4,9 @@
 #include <utility>
 #include <vector>
 
+#define all(x) begin(x), end(x)
+#define sz(x) (int)(x).size()
+
 using namespace std;
 using ll = long long;
 
@@ -12,7 +15,7 @@ struct Dinic {
     vector<vector<pair<int, int>>> g; // (node, index)
     vector<ll> cap;
 
-    explicit Dinic(int node_count) : n(node_count), g(node_count) {}
+    Dinic(int n) : n(n), g(n) {}
 
     vector<int> calculate_levels(int source) {
         vector<int> level(n, -1);
@@ -36,16 +39,16 @@ struct Dinic {
     }
     
     void add_dir_edge(int u, int v, ll c) {
-        g[u].emplace_back(v, static_cast<int>(cap.size()));
+        g[u].emplace_back(v, sz(cap));
         cap.push_back(c);
-        g[v].emplace_back(u, static_cast<int>(cap.size()));
+        g[v].emplace_back(u, sz(cap));
         cap.push_back(0);
     }
 
     void add_undir_edge(int u, int v, ll c) {
-        g[u].emplace_back(v, static_cast<int>(cap.size()));
+        g[u].emplace_back(v, sz(cap));
         cap.push_back(c);
-        g[v].emplace_back(u, static_cast<int>(cap.size()));
+        g[v].emplace_back(u, sz(cap));
         cap.push_back(c);
     }
 
@@ -55,7 +58,7 @@ struct Dinic {
             if (u == sink) return f;
 
             ll tf = 0;
-            for (int &k = it[u]; k < static_cast<int>(g[u].size()); ++k) {
+            for (int &k = it[u]; k < sz(g[u]); ++k) {
                 auto [v, i] = g[u][k];
                 if (cap[i] == 0 || level[v] != level[u] + 1) continue;
 

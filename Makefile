@@ -1,5 +1,5 @@
 CXX ?= g++
-CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra -Wshadow -Wconversion -pedantic
+CXXFLAGS ?= -std=c++20 -O2 -Wall -Wextra -Wconversion -pedantic
 TYPST ?= typst
 
 TEST_SOURCES := $(wildcard tests/*_test.cpp)
