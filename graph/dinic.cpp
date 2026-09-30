@@ -1,10 +1,8 @@
-#include <iostream>
+#include <algorithm>
 #include <queue>
 #include <limits>
+#include <utility>
 #include <vector>
-
-#define all(x) begin(x), end(x)
-#define sz(x) (int)(x).size()
 
 using namespace std;
 using ll = long long;
@@ -14,9 +12,9 @@ struct Dinic {
     vector<vector<pair<int, int>>> g; // (node, index)
     vector<ll> cap;
 
-    Dinic(int n) : n(n), g(n) {}
+    explicit Dinic(int node_count) : n(node_count), g(node_count) {}
 
-    vector<int> calculate_levels(int source, int sink) {
+    vector<int> calculate_levels(int source) {
         vector<int> level(n, -1);
         queue<int> q;
         level[source] = 0;
@@ -38,16 +36,16 @@ struct Dinic {
     }
     
     void add_dir_edge(int u, int v, ll c) {
-        g[u].emplace_back(v, sz(cap));
+        g[u].emplace_back(v, static_cast<int>(cap.size()));
         cap.push_back(c);
-        g[v].emplace_back(u, sz(cap));
+        g[v].emplace_back(u, static_cast<int>(cap.size()));
         cap.push_back(0);
     }
 
     void add_undir_edge(int u, int v, ll c) {
-        g[u].emplace_back(v, sz(cap));
+        g[u].emplace_back(v, static_cast<int>(cap.size()));
         cap.push_back(c);
-        g[v].emplace_back(u, sz(cap));
+        g[v].emplace_back(u, static_cast<int>(cap.size()));
         cap.push_back(c);
     }
 
@@ -57,7 +55,7 @@ struct Dinic {
             if (u == sink) return f;
 
             ll tf = 0;
-            for (int &k = it[u]; k < sz(g[u]); ++k) {
+            for (int &k = it[u]; k < static_cast<int>(g[u].size()); ++k) {
                 auto [v, i] = g[u][k];
                 if (cap[i] == 0 || level[v] != level[u] + 1) continue;
 
@@ -85,7 +83,7 @@ struct Dinic {
         ll add;
 
         while (true) {
-            auto level = calculate_levels(source, sink);
+            auto level = calculate_levels(source);
             if (level[sink] == -1) break;
 
             vector<int> it(n, 0);
@@ -96,19 +94,3 @@ struct Dinic {
         return flow;
     }
 };
-
-int main() {
-    cin.tie(0)->sync_with_stdio(0);
-    int n, m;
-    cin >> n >> m;
-
-    struct Dinic dinic(n);
-    while (m--) {
-        int u, v, c;
-        cin >> u >> v >> c;
-        u--; v--;
-        dinic.add_dir_edge(u, v, c);
-    }
-
-    cout << dinic.run(0, n - 1) << "\n";
-}
