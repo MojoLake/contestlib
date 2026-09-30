@@ -20,9 +20,7 @@
   #it
 ]
 #show raw.where(block: true): it => block(
-  fill: luma(245),
   inset: 4pt,
-  radius: 2pt,
   breakable: true,
   width: 100%,
   it,
