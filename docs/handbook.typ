@@ -34,6 +34,13 @@
 
 #outline(title: [Contents], depth: 2)
 
+= .vimrc
+
+```vim
+set cin aw ai is ts=4 sw=4 tm=50 nu rnu noeb bg=dark ru cul
+sy on
+```
+
 = Graph
 
 #include "content/graph/dinic.typ"
